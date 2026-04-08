@@ -4,9 +4,11 @@
 ## IP Definition
 We propose to design a *custom Vitis IP on the AMD Kria KV260* to accelerate the *sumcheck protocol*, focusing on the prover-side arithmetic operations.
 The main operation performed by the IP is the multilinear extension fold:
+
 $$
 T'(i) = T(2i) + r \cdot (T(2i+1) - T(2i)) \bmod q
 $$
+
 where:
 * (T) = evaluation table
 * (r) = verifier challenge
