@@ -19,7 +19,7 @@ The IP will perform:
 * accumulation / reduction
 These operations are well-suited for hardware acceleration because they are *highly parallel, repetitive, and arithmetic-heavy*, making them ideal for FPGA DSP pipelines and parallel memory access.
 Equivalent pseudocode:
-python
+```python
 def fold_round(table, r, q):
     out = []
     for i in range(len(table)//2):
@@ -27,7 +27,7 @@ def fold_round(table, r, q):
         b = table[2*i+1]
         out.append((a + r*(b-a)) % q)
     return out
----
+```
 ## IP Architecture
 The design will be split into smaller hardware modules:
 ### 1. Control Module
