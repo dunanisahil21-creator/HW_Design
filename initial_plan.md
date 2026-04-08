@@ -43,9 +43,11 @@ This module receives:
 Uses *shared memory (AXI memory-mapped interface)* to read input tables from DDR and write results back.
 ### 3. Fold Engine
 Core arithmetic pipeline that computes:
+
 $$
 a + r \cdot (b - a) \bmod q
 $$
+
 for each pair of table entries.
 ### 4. Modular Arithmetic Units
 Reusable submodules for:
