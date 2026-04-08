@@ -71,6 +71,7 @@ The PS (ARM cores on KV260) will:
 ---
 ### Existing AMD IP Reuse
 The architecture will reuse existing AMD/Xilinx IP blocks where applicable. In particular, AXI SmartConnect will be used for bus interconnect between the PS and custom IP, AXI DMA will be used for high-throughput transfer of evaluation tables between DDR and PL, and AXI BRAM Controller may be used for smaller buffered test cases. This allows the custom Vitis IP to focus on the modular arithmetic and fold datapath while relying on proven AMD infrastructure IP for memory movement and control.
+
 ---
 ## Interface Choice
 We will use:
