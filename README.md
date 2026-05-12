@@ -186,6 +186,57 @@ sudo /usr/local/share/pynq-venv/bin/python3 test_vars16.py
 sudo /usr/local/share/pynq-venv/bin/python3 test_vars20.py
 ```
 
+
+## Automated Verification & Reproduction
+
+### Full HLS Flow (one command)
+
+```bash
+cd hls_src/
+vitis_hls -f run_hls.tcl
+```
+
+This single command runs the entire HLS flow end-to-end:
+1. Creates project with `sumcheck_kernel` as top function
+2. Runs **csim** (C simulation against golden test vectors) → prints PASS/FAIL
+3. Runs **csynth** (C synthesis targeting xck26 at 200 MHz) → generates timing/resource reports
+4. Runs **cosim** (RTL co-simulation via Vivado XSIM) → verifies generated Verilog matches C
+5. Exports packaged IP to `sumcheck_hls_proj/solution1/impl/ip/`
+
+No manual GUI interaction required. All results are printed to stdout and saved in `sumcheck_hls_proj/solution1/syn/report/` and `sumcheck_hls_proj/solution1/sim/report/`.
+
+### On-Board FPGA Tests (after bitstream deployment)
+
+```bash
+# SSH into KV260
+ssh ubuntu@<kv260-ip>
+cd ~/sumcheck/
+
+# Self-test: vars4, expression a*b+c, 4 rounds
+sudo /usr/local/share/pynq-venv/bin/python3 sumcheck_pynq.py sumcheck.bit
+
+# vars16: 65,536 entries, 16 rounds
+sudo /usr/local/share/pynq-venv/bin/python3 test_vars16.py
+
+# vars20: 1,048,576 entries, 20 rounds
+sudo /usr/local/share/pynq-venv/bin/python3 test_vars20.py
+
+# All 4 base expressions with shared fold
+sudo /usr/local/share/pynq-venv/bin/python3 test_all_expressions.py v16
+```
+
+Each script loads the FPGA overlay, writes registers via MMIO, runs prove+fold for all rounds, compares outputs against golden test vectors, and prints per-round PASS/FAIL with timing. Exit code 0 = all pass, 1 = failure.
+
+### CPU Baseline Benchmark
+
+```bash
+cd benchmark/
+python3 benchmark_cpu.py v16
+python3 benchmark_cpu.py v20
+```
+
+Runs numpy (vectorized) and pure Python sumcheck on the host CPU for comparison against FPGA results.
+
 ## Verification
 
 Correctness verified at three levels:
