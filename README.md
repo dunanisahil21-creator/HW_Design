@@ -1,6 +1,6 @@
 # Sumcheck Protocol FPGA Accelerator
 
-Hardware-accelerated zero-knowledge proof prover for the sumcheck protocol, deployed on the **AMD Kria KV260** FPGA platform. Built for ECE-9463 (Hardware for ZKPs) at NYU Tandon, Spring 2026.
+Hardware-accelerated zero-knowledge proof prover for the sumcheck protocol, deployed on the **AMD Kria KV260** FPGA platform.
 
 ---
 
