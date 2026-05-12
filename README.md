@@ -15,6 +15,8 @@ The sumcheck protocol is a fundamental interactive proof used in zero-knowledge 
 - Single unified HLS kernel with mode-based prove/fold switching
 - Deployed and tested on real KV260 hardware via PYNQ
 
+For detailed synthesis reports, simulation logs, and quantitative analysis, see [VERIFICATION.md](VERIFICATION.md).
+
 ## Target Platform
 
 | Spec | Value |
