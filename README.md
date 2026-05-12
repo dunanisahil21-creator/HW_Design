@@ -49,9 +49,6 @@ The sumcheck protocol is a fundamental interactive proof used in zero-knowledge 
 │   ├── v20_table_{a,b,c,d,e,g}.npy # vars20 MLE tables
 │   └── v20_test_meta.json          # vars20 metadata
 │
-├── vivado_tcl/                     # Vivado automation (optional)
-│   └── build_vivado.tcl            # Block design + bitstream generation script
-│
 ├── docs/                           # Documentation and presentation
 │   └── Sumcheck_FPGA_Accelerator.pptx
 │
