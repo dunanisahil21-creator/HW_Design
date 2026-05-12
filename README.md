@@ -2,8 +2,6 @@
 
 Hardware-accelerated zero-knowledge proof prover for the sumcheck protocol, deployed on the **AMD Kria KV260** FPGA platform. Built for ECE-9463 (Hardware for ZKPs) at NYU Tandon, Spring 2026.
 
-**Authors:** Abdulhaseeb Khan, Sahil Dunani
-
 ---
 
 ## Overview
@@ -238,3 +236,6 @@ All operations map to DSP48E2 multiply-accumulate slices with deterministic late
 | Ubuntu (KV260) | 22.04 |
 | Python | 3.10 |
 | XRT | 2.13 |
+
+
+**Authors:** Abdulhaseeb Khan, Sahil Dunani
