@@ -88,6 +88,33 @@ Hardware resources are shared between prove and fold since they never execute si
 └──────────────────────┘         └─────────────────────────────┘
 ```
 
+### Interface Protocol Details
+
+**Control Interface (s_axilite):**
+- Protocol: AXI4-Lite (32-bit data, 9-bit address)
+- Handshake: `ap_ctrl_hs` — PS writes bit 0 of CTRL register (0x00) to assert `ap_start`, polls bit 1 (`ap_done`) to detect completion
+- All scalar parameters (q, barrett_m, num_pairs, mode, etc.) are written as 32-bit MMIO writes before asserting `ap_start`
+- Output array `round_evals` is read as 4 consecutive 32-bit MMIO reads from offset 0x40 after `ap_done`
+- DDR pointers (`tables_01`, `tables_23`, `tables_45`) are written as two 32-bit registers each (low + high) to support 64-bit physical addresses
+
+**Memory Interfaces (m_axi):**
+- Protocol: AXI4 Memory-Mapped (full AXI4, not AXI4-Stream)
+- Three independent ports: `gmem0`, `gmem1`, `gmem2` — each 32-bit data width, 64-bit address width
+- Connected to Zynq PS HP slave ports (S_AXI_HP0/HP1/HP2_FPD) at 128-bit, with automatic width conversion by AXI SmartConnect
+- Burst length: up to 16 beats (HLS default), used for chunk prefetch reads and fold write-back
+- Address range: 0x00000000–0x7FFFFFFF (2 GB DDR4 low region)
+
+**DMA / Buffer Management:**
+- PS allocates physically contiguous buffers using `pynq.allocate()` (backed by CMA — Contiguous Memory Allocator)
+- Physical addresses passed to the kernel via the s_axilite pointer registers
+- `buf.flush()` ensures ARM D-cache coherency before kernel reads; `buf.invalidate()` before PS reads FPGA-written data
+
+**Interrupt:**
+- Single wire from kernel `interrupt` output to Zynq `pl_ps_irq0[0:0]`
+- Not used in current driver (polling-based via `ap_done`); available for interrupt-driven operation
+
+
+
 ### Key Optimizations
 
 | Optimization | Description | Impact |
